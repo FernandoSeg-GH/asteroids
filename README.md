@@ -27,17 +27,17 @@ Use the following API:
 
 ## ---- Stack --------------------------------------------
 
+### Backend:
+
+- NestJs with with Swagger (to easily handle endpoints)
+- In-Memory data storage for storing favorites (In a real world scenario I would setup a database to store favories)
+- Strongly typed response (we'll use these same types in our frontend)
+
 ### Frontend:
 
 - NextJs 15 with Typescript (with App Router)
 - Tailwind for styling
 - Server actions to fetch data from our backend
-
-### Backend:
-
-- NestJs with Typescript
-- Swagger (for easily check our endpoints)
-- In-Memory data storage for storing favorites (_In a real world scenario I would setup a database to store favories_)
 
 ### Docker
 
