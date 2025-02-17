@@ -4,12 +4,14 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AsteroidsModule } from './asteroids/asteroids.module';
 import { HttpModule } from '@nestjs/axios';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
     HttpModule,
-    AsteroidsModule,
     ConfigModule.forRoot({ isGlobal: true }),
+    AsteroidsModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

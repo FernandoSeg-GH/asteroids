@@ -1,6 +1,6 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import axios from 'axios';
-import { AsteroidsApiResponse } from './asteroids.types';
+import { Asteroid, AsteroidsApiResponse } from './asteroids.types';
 
 @Injectable()
 export class AsteroidsService {
@@ -13,14 +13,28 @@ export class AsteroidsService {
   ): Promise<AsteroidsApiResponse> {
     try {
       const url = `${this.NASA_API_URL}?start_date=${startDate}&end_date=${endDate}&api_key=${this.API_KEY}`;
-      console.log(`Fetching NASA API: ${url}`);
-
       const response = await axios.get<AsteroidsApiResponse>(url);
+
       return response.data;
     } catch (error) {
       console.error('NASA API Error:', error.response?.data || error.message);
       throw new HttpException(
         'Error fetching asteroid data',
+        error.response?.status || 500,
+      );
+    }
+  }
+
+  async fetchAsteroidById(id: string): Promise<Asteroid> {
+    try {
+      const url = `${this.NASA_API_URL.replace('/feed', '/neo')}/${id}?api_key=${this.API_KEY}`;
+      const response = await axios.get<Asteroid>(url);
+      const data = response.data;
+      return data;
+    } catch (error) {
+      console.error('NASA API Error:', error.response?.data || error.message);
+      throw new HttpException(
+        'Error fetching asteroid data by ID',
         error.response?.status || 500,
       );
     }
