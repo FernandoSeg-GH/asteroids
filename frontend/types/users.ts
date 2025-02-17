@@ -1,8 +1,8 @@
-import { ApiResponseWrapper, Asteroid } from "./asteroids";
+import { ApiResponseWrapper, Asteroid, AsteroidsData } from "./asteroids";
 
 export interface UserFavorite {
   id: string;
   email: string;
   username: string;
-  favorites: ApiResponseWrapper["data"][];
+  favorites: ApiResponseWrapper<AsteroidsData>["data"][];
 }
