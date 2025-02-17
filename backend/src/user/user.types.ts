@@ -1,7 +1,11 @@
 import { Asteroid } from '../asteroids/asteroids.types';
 
 export interface User {
-  username: string;
+  id: string;
   email: string;
-  favorites: Asteroid[];
+  username: string;
+  password: string;
+  favorites?: Asteroid[];
+  createdAt: Date;
+  updatedAt: Date;
 }

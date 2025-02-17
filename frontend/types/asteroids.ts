@@ -1,6 +1,11 @@
-export interface ApiResponseWrapper {
+// export interface ApiResponseWrapper {
+//   success: boolean;
+//   data: AsteroidsData;
+//   error: string | null;
+// }
+export interface ApiResponseWrapper<T> {
   success: boolean;
-  data: AsteroidsData;
+  data: T;
   error: string | null;
 }
 
@@ -27,6 +32,7 @@ export interface Asteroid {
   is_potentially_hazardous_asteroid: boolean;
   close_approach_data: CloseApproachData[];
   is_sentry_object: boolean;
+  orbital_data: unknown;
 }
 
 export interface AsteroidDetail extends Asteroid {

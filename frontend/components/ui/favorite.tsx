@@ -1,11 +1,12 @@
 "use client";
 import { useState, useContext } from "react";
 import { Button } from "@/components/ui/button";
-import { addFavoriteAction, removeFavoriteAction } from "@/lib/services/userService";
+import { addFavoriteAction, removeFavoriteAction } from "@/services/userService";
 import { useToast } from "@/hooks/use-toast";
-import { Asteroid } from "@/lib/types/asteroids";
+import { Asteroid } from "@/types/asteroids";
 import { AsteroidsContext } from "@/context/AsteroidContext";
 import { Heart } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 type FavoriteButtonProps = {
     asteroid: Asteroid;
@@ -16,6 +17,7 @@ export default function FavoriteButton({ asteroid, isFavorited = false }: Favori
     const [loading, setLoading] = useState(false);
     const { toast } = useToast();
     const { dispatch } = useContext(AsteroidsContext);
+    const router = useRouter()
 
     const handleFavorite = async () => {
         setLoading(true);
@@ -24,8 +26,9 @@ export default function FavoriteButton({ asteroid, isFavorited = false }: Favori
                 await removeFavoriteAction(asteroid.id);
                 dispatch({ type: "REMOVE_FAVORITE", payload: asteroid.id });
                 toast({ title: "Removed from favorites" });
+                router.push("/favorites")
             } else {
-                await addFavoriteAction(String(asteroid));
+                await addFavoriteAction(String(asteroid.id));
                 dispatch({ type: "ADD_FAVORITE", payload: asteroid });
                 toast({ title: "Added to favorites" });
             }
@@ -41,15 +44,15 @@ export default function FavoriteButton({ asteroid, isFavorited = false }: Favori
             {loading ? (
                 "Processing..."
             ) : isFavorited ? (
-                <>
+                <div className="flex items-center gap-1">
                     <Heart className="h-5 w-5 fill-red-500 text-red-500" />
                     <span>Remove</span>
-                </>
+                </div>
             ) : (
-                <>
+                <div className="flex items-center gap-1">
                     <Heart className="h-5 w-5" />
                     <span>Add</span>
-                </>
+                </div>
             )}
         </Button>
     );

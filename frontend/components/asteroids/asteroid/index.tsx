@@ -1,6 +1,8 @@
-"use client"
-import { Asteroid as AsteroidType } from "@/lib/types/asteroids";
+"use client";
+
+import { Asteroid as AsteroidType } from "@/types/asteroids";
 import Link from "next/link";
+import Image from "next/image";
 import {
     Accordion,
     AccordionItem,
@@ -18,7 +20,7 @@ type AsteroidItemProps = {
 
 export default function AsteroidCard({ asteroid }: AsteroidItemProps) {
     const { state } = useContext(AsteroidsContext);
-    const isFavorited = state.favorites.some((fav) => fav.id === asteroid.id);
+    const isFavorited = state.favorites.some((fav) => fav.asteroidId === asteroid.id);
 
     return (
         <Accordion type="single" collapsible className="mb-4">
@@ -28,17 +30,36 @@ export default function AsteroidCard({ asteroid }: AsteroidItemProps) {
             >
                 <AccordionTrigger className="flex flex-col md:flex-row justify-between items-center w-full text-left">
                     <div className="flex items-center gap-3">
-                        <img src="/asteroid.svg" alt="Asteroid" className="h-8 w-8" />
-                        <span className="text-xl font-bold text-blue-800">{asteroid.name}</span>
+                        <Image
+                            src="/asteroid.svg"
+                            alt="Asteroid"
+                            width={32}
+                            height={32}
+                            className="h-8 w-8"
+                        />
+                        <span className="text-xl font-bold text-blue-800">
+                            {asteroid.name}
+                        </span>
                     </div>
-                    <p className="text-sm text-gray-600">Mag: {asteroid.absolute_magnitude_h}</p>
+                    <p className="text-sm text-gray-600">
+                        Magnitude: {asteroid.absolute_magnitude_h}
+                    </p>
                 </AccordionTrigger>
                 <AccordionContent>
                     <div className="p-4 space-y-3 border-t">
                         <p>
                             <strong>Estimated Diameter:</strong>{" "}
-                            {asteroid.estimated_diameter.kilometers.estimated_diameter_min.toFixed(2)} –{" "}
-                            {asteroid.estimated_diameter.kilometers.estimated_diameter_max.toFixed(2)} km
+                            {asteroid.estimated_diameter.kilometers.estimated_diameter_min.toFixed(
+                                2
+                            )}{" "}
+                            –{" "}
+                            {asteroid.estimated_diameter.kilometers.estimated_diameter_max.toFixed(
+                                2
+                            )}{" "}
+                            km
+                        </p>
+                        <p className="text-sm text-gray-600">
+                            Magnitude: {asteroid.absolute_magnitude_h}
                         </p>
                         <p>
                             <strong>Potentially Hazardous:</strong>{" "}
@@ -50,22 +71,28 @@ export default function AsteroidCard({ asteroid }: AsteroidItemProps) {
                         </p>
                         <p>
                             <strong>Miss Distance:</strong>{" "}
-                            {parseFloat(asteroid.close_approach_data[0].miss_distance.kilometers).toLocaleString()} km
+                            {parseFloat(
+                                asteroid.close_approach_data[0].miss_distance.kilometers
+                            ).toLocaleString()}{" "}
+                            km
                         </p>
                         <p>
                             <strong>Relative Velocity:</strong>{" "}
-                            {parseFloat(asteroid.close_approach_data[0].relative_velocity.kilometers_per_hour).toLocaleString()} km/h
+                            {parseFloat(
+                                asteroid.close_approach_data[0].relative_velocity.kilometers_per_hour
+                            ).toLocaleString()}{" "}
+                            km/h
                         </p>
-                        <div className="flex flex-col sm:flex-row items-center justify-end gap-4 mt-3">
-                            <FavoriteButton asteroid={asteroid} isFavorited={isFavorited} />
-                            <Link
-                                href={`/asteroids/${asteroid.id}`}
-                                className="flex items-center gap-1 bg-gray-600 text-white px-3 py-2 rounded hover:bg-black transition-colors"
-                            >
-                                <PlusCircle className="h-5 w-5" />
-                                <span>View Details</span>
-                            </Link>
-                        </div>
+                    </div>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6">
+                        <FavoriteButton asteroid={asteroid} isFavorited={isFavorited} />
+                        <Link
+                            href={`/asteroids/${asteroid.id}`}
+                            className="flex items-center gap-1 bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition-colors"
+                        >
+                            <PlusCircle className="h-5 w-5" />
+                            <span>View Details</span>
+                        </Link>
                     </div>
                 </AccordionContent>
             </AccordionItem>

@@ -1,23 +1,42 @@
-import FavoritesList from "@/components/asteroids/favorites";
-import { getFavoritesAction } from "@/lib/services/userService";
 
+import authOptions from "@/app/api/auth/authOptions";
+import FavoritesClient from "@/components/asteroids/favorites";
+import { getFavoritesAction } from "@/services/userService";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
 export default async function FavoritesPage() {
-    let user;
+    const session = await getServerSession(authOptions);
+
+    if (!session) {
+        redirect("/auth/login");
+    }
+
+    let favorites: { asteroidId: string }[] = [];
+    let isLoading = true;
+    let errorMessage = "";
+
     try {
-        user = await getFavoritesAction();
+        favorites = await getFavoritesAction();
+        isLoading = false;
     } catch (error) {
         console.error("Failed to load favorites:", error);
-        user = { favorites: [] };
+        errorMessage = error instanceof Error ? error.message : "Unknown error";
+        isLoading = false;
     }
 
     return (
         <div className="p-8">
             <h1 className="text-3xl font-bold mb-4">My Favorites</h1>
-            {user.favorites && user.favorites.length > 0 ? (
-                <FavoritesList favorites={user.favorites} />
+
+            {isLoading ? (
+                <p>Loading favorites...</p>
+            ) : errorMessage ? (
+                <p className="text-red-500">{errorMessage}</p>
+            ) : favorites.length === 0 ? (
+                <p>No favorites added yet.</p>
             ) : (
-                <p>No favorites yet.</p>
+                <FavoritesClient initialFavorites={favorites} />
             )}
         </div>
     );

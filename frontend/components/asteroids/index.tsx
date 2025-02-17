@@ -1,11 +1,11 @@
 "use client";
 import { useEffect, useContext, useState } from "react";
-import { fetchAsteroids } from "@/lib/services/asteroidService";
-import { Asteroid as AsteroidType } from "@/lib/types/asteroids";
+import { Asteroid as AsteroidType } from "@/types/asteroids";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AsteroidsContext } from "@/context/AsteroidContext";
 import SearchForm from "./search";
 import AsteroidCard from "./asteroid";
+import { fetchAsteroids } from "@/services/asteroidService";
 
 type MainProps = {
     initialAsteroids: AsteroidType[];
@@ -42,18 +42,18 @@ export default function Main({ initialAsteroids }: MainProps) {
     );
 
     return (
-        <div className="container mx-auto p-4">
+        <div className="container max-w-lg mx-auto p-4">
             <SearchForm onSearch={handleSearch} />
 
-            <div className="mb-4 flex items-center gap-2">
-                <label htmlFor="sortOrder" className="font-medium">
+            <div className="mb-4 flex items-center justify-end gap-2">
+                <label htmlFor="sortOrder" className="font-semibold">
                     Sort by:
                 </label>
                 <select
                     id="sortOrder"
                     value={sortOrder}
                     onChange={(e) => setSortOrder(e.target.value as "asc" | "desc")}
-                    className="p-2 border rounded"
+                    className="p-2 border rounded text-sm font-medium"
                 >
                     <option value="asc">Name: A–Z</option>
                     <option value="desc">Name: Z–A</option>

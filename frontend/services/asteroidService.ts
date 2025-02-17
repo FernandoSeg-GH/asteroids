@@ -2,7 +2,8 @@ import {
   Asteroid,
   ApiResponseWrapper,
   AsteroidDetail,
-} from "@/lib/types/asteroids";
+  AsteroidsData,
+} from "@/types/asteroids";
 
 const NEXT_PUBLIC_BACKEND_API_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL;
 
@@ -22,7 +23,7 @@ export async function fetchAsteroids(
       );
     }
 
-    const response: ApiResponseWrapper = await res.json();
+    const response: ApiResponseWrapper<AsteroidsData> = await res.json();
 
     if (!response || !response.success || !response.data) {
       throw new Error("Invalid API response: data is missing");
@@ -38,20 +39,20 @@ export async function fetchAsteroids(
   }
 }
 
-export async function fetchAsteroidById(id: string): Promise<AsteroidDetail> {
+export async function fetchAsteroidById(
+  id: string
+): Promise<ApiResponseWrapper<AsteroidDetail>> {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/asteroids/${id}`,
-      {
-        cache: "no-store",
-      }
+      { cache: "no-store" }
     );
     if (!res.ok) {
       throw new Error(`Failed to fetch asteroid details: ${res.statusText}`);
     }
 
-    const asteroid: AsteroidDetail = await res.json();
-    return asteroid;
+    const response: ApiResponseWrapper<AsteroidDetail> = await res.json();
+    return response;
   } catch (error) {
     console.error("Error fetching asteroid by ID:", error);
     throw error;

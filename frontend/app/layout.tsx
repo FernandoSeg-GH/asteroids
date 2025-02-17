@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AsteroidsProvider } from "@/context/AsteroidContext";
 import Navbar from "@/components/ui/navbar";
+import SessionContext from "@/context/SessionContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,15 +26,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <AsteroidsProvider>
-          <Navbar />
-          {children}
-        </AsteroidsProvider>
-      </body>
-    </html>
+    <SessionContext>
+      <html lang="en">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <AsteroidsProvider>
+            <Navbar />
+            <main className="pt-20">
+              {children}
+            </main>
+          </AsteroidsProvider>
+        </body>
+      </html>
+    </SessionContext>
   );
 }

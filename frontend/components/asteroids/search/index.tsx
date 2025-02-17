@@ -43,7 +43,7 @@ export default function SearchForm({ onSearch }: SearchFormProps) {
     return (
         <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4 mb-8">
             <div className="w-full flex flex-col items-center justify-center text-center">
-                <label className="mb-1 text-sm font-medium block">
+                <label className="mb-1 text-sm font-semibold block">
                     Select Date Range
                 </label>
                 <Calendar
@@ -62,7 +62,7 @@ export default function SearchForm({ onSearch }: SearchFormProps) {
                         setRange(updatedRange);
                     }}
                     disabled={{ after: today }}
-                    className="w-full p-2 border rounded mx-auto"
+                    className="w-auto p-2 border rounded mx-auto"
                 />
             </div>
             <Button type="submit" className="w-full md:w-auto">
